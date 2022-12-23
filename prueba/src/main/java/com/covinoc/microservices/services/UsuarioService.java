@@ -23,11 +23,17 @@ public class UsuarioService {
 		return iUsuarioRepository.save(usuario);
 	}
 	
-	public List<Usuario> getAllUsuario(){
-		return iUsuarioRepository.findAll();
+	 public Mono<ResponseEntity> getAllUsuario() {
+		  return Mono.just(ResponseEntity.status(200).body(this.iUsuarioRepository.findAll()));
 	}
+	 
+	 
+	 public Optional<Usuario> getUsuarioById(Long id) {			
+		  return iUsuarioRepository.findById(id);
+	}
+	 	
 	
-	public void deleteCourse(Long id) {
+	public void deleteUsuario(Long id) {
 		iUsuarioRepository.deleteById(id);
 	}
 

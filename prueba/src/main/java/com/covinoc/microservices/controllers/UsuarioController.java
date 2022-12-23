@@ -1,7 +1,7 @@
 package com.covinoc.microservices.controllers;
 
 import java.util.List;
-
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,68 +28,49 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/api")
 public class UsuarioController implements Controlador<Usuario>{
-	
 	@Autowired
 	private UsuarioService usuarioService;
-		
-	@GetMapping("/usuarios")
-	public List<Usuario> buscarUsuarios(){
-		return usuarioService.getAllUsuario();
-	}
 	
-	@PutMapping("/usuario/{id}")
-	public Usuario updateCourse(@PathVariable Integer id, @Validated @RequestBody Usuario usuario,
+	
+//Crear Usuario
+	 @PostMapping(consumes = "application/json", produces = "application/json")
+	    public  Mono<ResponseEntity> crear(@Valid @RequestBody Usuario usuario) {
+	        return this.usuarioService.crear(usuario);
+	    }
+	
+	 //Editar  Usuario
+	@PutMapping("/update/")
+	public Usuario updateUsuario(@Validated @RequestBody Usuario usuario,
 		 BindingResult result) {
 				if (result.hasErrors()) {
 				  throw new InvalidDataException(result);
 				}
 		return usuarioService.saveUsuario(usuario);
 	
-	}
+	}	
+		
 	
+	 //Borrar  Usuario
 	@ResponseStatus(HttpStatus.OK)
-	@RequestMapping(value = "/delete", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/delete/", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void deleteCourse(@PathVariable Long id) {
-		usuarioService.deleteCourse(id);
+		usuarioService.deleteUsuario(id);
 	}
-
-	@Override
-	public Mono<ResponseEntity> consultar(String datos) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Mono<ResponseEntity> listar(String datos) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	 @PostMapping(consumes = "application/json", produces = "application/json")
-	    public ResponseEntity crearSync(@Valid @RequestBody Usuario usuario) {
-	        return this.usuarioService.crear(usuario).block();
-	    }
-
-	@Override
-	public Mono<ResponseEntity> actualizar(Usuario datos) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Mono<ResponseEntity> eliminar(String datos) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Mono<ResponseEntity> crear(Usuario datos) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-
 
 	
+	//Listar Todos
+	@Override
+    @GetMapping(value = "/listarAll")
+	public Mono<ResponseEntity> listar() {
+		return usuarioService.getAllUsuario();
+	}
 
+
+	//Listar por Id
+	@Override
+    @GetMapping(value = "/listarById")
+	public  Optional<Usuario> porId(Long id) {
+		return usuarioService.getUsuarioById(id);
+	}
+	
 }
