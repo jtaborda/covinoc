@@ -36,7 +36,14 @@ public class UsuarioService {
 	 public Optional<Usuario> getUsuarioById(Long id) {			
 		  return iUsuarioRepository.findById(id);
 	}
-	 	
+
+		public Mono<ResponseEntity> getUsuarioBycedula(Integer id) 
+	 {			
+		  return Mono.just(ResponseEntity.status(200).body( this.iUsuarioRepository.consultarIdentificacion(id) ) );
+	 }
+            
+		 
+	
 	
 	public void deleteUsuario(Long id) {
 		iUsuarioRepository.deleteById(id);
@@ -63,7 +70,7 @@ public class UsuarioService {
                         s.onNext(ResponseEntity.status(200).body(usuario));
                         s.onComplete();
                     } else {
-                        s.onNext(ResponseEntity.status(400).body(ResponseEntity.status(400).body("No se Guardo")));
+                        s.onNext(ResponseEntity.status(500).body(ResponseEntity.status(500).body("No se Guardo")));
                         s.onComplete();
                     }
         }

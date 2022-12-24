@@ -15,4 +15,5 @@ public interface Controlador<T> {
 		Mono<ResponseEntity> listar();
 		Optional<Usuario> porId(Long id);
 		public void deleteCourse(Long id);
+		Mono<ResponseEntity> porCedula(Integer cedula);
 }

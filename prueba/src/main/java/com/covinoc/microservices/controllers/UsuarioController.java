@@ -77,4 +77,13 @@ public class UsuarioController implements Controlador<Usuario>{
 		return usuarioService.getUsuarioById(id);
 	}
 	
+	
+	//buscar por cedula
+		@Override
+	    @GetMapping(value = "/listarByCedula/{cedula}")
+		@ResponseStatus(HttpStatus.NOT_FOUND)
+		public Mono<ResponseEntity> porCedula(@PathVariable Integer cedula) {
+			return usuarioService.getUsuarioBycedula(cedula);
+		}
+	
 }
