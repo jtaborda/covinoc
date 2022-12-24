@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +28,7 @@ import reactor.core.publisher.Mono;
 
 
 @RestController
+@CrossOrigin(origins ="http://localhost:4200")
 @RequestMapping("/api")
 public class UsuarioController implements Controlador<Usuario>{
 	@Autowired
@@ -51,12 +54,12 @@ public class UsuarioController implements Controlador<Usuario>{
 		
 	
 	 //Borrar  Usuario
-	@ResponseStatus(HttpStatus.OK)
-	@RequestMapping(value = "/delete/", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping("/delete/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)	
 	public void deleteCourse(@PathVariable Long id) {
 		usuarioService.deleteUsuario(id);
 	}
-
+	
 	
 	//Listar Todos
 	@Override
@@ -68,8 +71,9 @@ public class UsuarioController implements Controlador<Usuario>{
 
 	//Listar por Id
 	@Override
-    @GetMapping(value = "/listarById")
-	public  Optional<Usuario> porId(Long id) {
+    @GetMapping(value = "/listarById/{id}")
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public  Optional<Usuario> porId(@PathVariable Long id) {
 		return usuarioService.getUsuarioById(id);
 	}
 	

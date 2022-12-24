@@ -1,5 +1,7 @@
 package com.covinoc.microservices.models;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,18 +22,28 @@ public class Usuario {
 		@Column(name = "nombre", nullable = false)
 		private String nombre;
 		
-		@Column(name = "telefono", nullable = false)
+		@Column(name = "telefono")
 		private int telefono;
 
 		@Column(name = "identificacion", nullable = false)
 		private int identificacion;
 		
-		//sexo: F, M, ...
-		@Column(name = "genero", nullable = false, length = 1)
+		@Column(name = "genero", nullable = false, length = 10)
 		private String genero;
 		
-		@Column(name = "correo", nullable = false)
+		@Column(name = "correo")
 		private String correo;
+		
+		@Column(name = "fechaCreacionRegistro")
+		private Date fechaCreacionRegistro;
+
+		public Date getFechaCreacionRegistro() {
+			return fechaCreacionRegistro;
+		}
+
+		public void setFechaCreacionRegistro(Date fechaCreacionRegistro) {
+			this.fechaCreacionRegistro = fechaCreacionRegistro;
+		}
 
 		public int getIdentificacion() {
 			return identificacion;

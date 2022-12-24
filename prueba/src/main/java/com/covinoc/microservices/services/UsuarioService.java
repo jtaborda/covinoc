@@ -1,5 +1,7 @@
 package com.covinoc.microservices.services;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +22,9 @@ public class UsuarioService {
 	private IUsuarioRepository iUsuarioRepository;
 	
 	public Usuario saveUsuario(Usuario usuario) {
+	 	
+    	Calendar calendar = Calendar.getInstance(); 
+    	usuario.setFechaCreacionRegistro(calendar.getTime());    	
 		return iUsuarioRepository.save(usuario);
 	}
 	
@@ -36,19 +41,24 @@ public class UsuarioService {
 	public void deleteUsuario(Long id) {
 		iUsuarioRepository.deleteById(id);
 	}
-
+	Date date = new Date();
     public Mono<ResponseEntity> crear(Usuario x) {
+    	
         return Mono.fromDirect(s -> {
         	
         	
             Optional<Usuario> optionalUser = this.iUsuarioRepository.consultarIdentificacion(x.getIdentificacion());
 
             if (optionalUser.isPresent()) {
-                s.onNext(ResponseEntity.status(400).body("El usuario con identificaciÃ³n "+x.getIdentificacion()+" ya tiene existe"));
+                s.onNext(ResponseEntity.status(400).body("El usuario con identificacion "+x.getIdentificacion()+" ya tiene existe"));
                 s.onComplete();
             }
         	
-            else {        Usuario usuario = this.iUsuarioRepository.save(x);
+            else {        
+            	
+            	Calendar calendar = Calendar.getInstance(); 
+            	x.setFechaCreacionRegistro(calendar.getTime());
+            	Usuario usuario = this.iUsuarioRepository.save(x);
                     if (usuario.getId() != null) {
                         s.onNext(ResponseEntity.status(200).body(usuario));
                         s.onComplete();
